@@ -2,10 +2,10 @@
 
 namespace GroupExpensesManager
 {
-    interface IPayment
+    public interface IPayment
     {
         Guid Id { get; }
         CurrencyValue Amount { get; }
-        DateTime TimeStamp { get; }
+        DateTime? TimeStamp { get; }
     }
 }

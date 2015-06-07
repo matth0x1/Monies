@@ -2,8 +2,13 @@
 
 namespace GroupExpensesManager
 {
-    class Person
+    public class Person
     {
+        // Used for serialisation
+        private Person() { }
+
+        public Person(string name) : this(Guid.NewGuid(), name) { }
+
         public Person(Guid id, string name)
         {
             Id = id;
