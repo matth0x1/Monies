@@ -19,10 +19,10 @@ namespace MoniesTests
                 // Create Participants
                 Dictionary<Guid, Person> participants = new Dictionary<Guid, Person>();
 
-                Person paul   = new Person("Paul");
-                Person ringo  = new Person("Ringo");
-                Person john   = new Person("John");
-                Person george = new Person("George");
+                Person paul   = new Person(new Guid("95af1e71-b8fe-43b4-a579-ec3a41b6e99f"),"Paul");
+                Person ringo  = new Person(new Guid("39116393-da1b-4ad1-a8ba-89a78acfae0f"), "Ringo");
+                Person john   = new Person(new Guid("9b371c8d-6eca-460a-867b-4105f0e42f58"), "John");
+                Person george = new Person(new Guid("9059fd43-2960-4276-9200-82e3b33a1698"), "George");
 
                 participants.Add(paul.Id,   paul);
                 participants.Add(ringo.Id,  ringo);
@@ -52,8 +52,9 @@ namespace MoniesTests
             string serialisedExpensesRecord = expensesRecord.Serialize();
 
             // Compare XML
-
             string exampleDataXml = GetSerializationTestXmlString();
+            
+            Assert.AreEqual(serialisedExpensesRecord, exampleDataXml);
         }
 
         [TestMethod]
@@ -92,7 +93,7 @@ namespace MoniesTests
 
         private static string GetSerializationTestXmlString()
         {
-            string filePath = @"TestData\SerializationTest.xml";
+            string filePath = @"TestData\simpleData.xml";
             string testData = File.ReadAllText(filePath);
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(testData), "File contents is likely empty.");

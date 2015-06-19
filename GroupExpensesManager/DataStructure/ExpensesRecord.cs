@@ -26,14 +26,14 @@ namespace GroupExpensesManager
             using (XmlTextWriter xml = new XmlTextWriter(str))
             {
                 xml.WriteStartDocument();
-                xml.WriteWhitespace("\n");
+                xml.WriteWhitespace("\r\n");
                 xml.WriteStartElement("ExpensesRecord");
                 xml.WriteAttributeString("Version", "1.0.0.0");
-                xml.WriteWhitespace("\n  ");
+                xml.WriteWhitespace("\r\n  ");
 
                 //People
                 xml.WriteStartElement("Participants");
-                xml.WriteWhitespace("\n  ");
+                xml.WriteWhitespace("\r\n  ");
                 //    Person: ID, Name
 
                 foreach (Person person in Participants.Values)
@@ -43,15 +43,15 @@ namespace GroupExpensesManager
                     xml.WriteAttributeString("ID", person.Id.ToString());
                     xml.WriteAttributeString("Name", person.Name);
                     xml.WriteEndElement();
-                    xml.WriteWhitespace("\n  ");
+                    xml.WriteWhitespace("\r\n  ");
                 }
                 // End Participants
                 xml.WriteEndElement();
-                xml.WriteWhitespace("\n  ");
+                xml.WriteWhitespace("\r\n  ");
 
                 //Expenses 
                 xml.WriteStartElement("Expenses");
-                xml.WriteWhitespace("\n  ");
+                xml.WriteWhitespace("\r\n  ");
 
                 foreach (Expense expense in Expenses.Values)
                 {
@@ -64,11 +64,11 @@ namespace GroupExpensesManager
                     if (expense.TimeStamp != null)
                         xml.WriteAttributeString("Timestamp", expense.TimeStamp.ToString());
 
-                    xml.WriteWhitespace("\n      ");
+                    xml.WriteWhitespace("\r\n      ");
                     
                     //        Beneficiaries: ID
                     xml.WriteStartElement("Beneficiaries");
-                    xml.WriteWhitespace("\n      ");
+                    xml.WriteWhitespace("\r\n      ");
 
                     foreach (Person beneficiary in expense.Beneficiaries)
                     {
@@ -76,21 +76,21 @@ namespace GroupExpensesManager
                         xml.WriteStartElement("Beneficiary");
                         xml.WriteAttributeString("ID", beneficiary.Id.ToString());
                         xml.WriteEndElement();
-                        xml.WriteWhitespace("\n      ");
+                        xml.WriteWhitespace("\r\n      ");
 
                     }
 
                     // End Beneficiaries
                     xml.WriteEndElement();
-                    xml.WriteWhitespace("\n    ");
+                    xml.WriteWhitespace("\r\n    ");
 
                     // End Expense
                     xml.WriteEndElement();
-                    xml.WriteWhitespace("\n  ");
+                    xml.WriteWhitespace("\r\n  ");
                 }
                 // End Expenses
                 xml.WriteEndElement();
-                xml.WriteWhitespace("\n");
+                xml.WriteWhitespace("\r\n");
 
                 // End ExpensesRecord
                 xml.WriteEndElement();
@@ -106,9 +106,33 @@ namespace GroupExpensesManager
 
             try
             {
-                return XmlSerializationUtils.DeserialiseObject<ExpensesRecord>(xmlString);
+                ExpensesRecord deserialisedRecord = new ExpensesRecord();
+
+                using (StringReader str = new StringReader(xmlString))
+                using (XmlReader reader = XmlReader.Create(str))
+                {
+                    while (reader.Read())
+                    {
+                        // Only detect start elements.
+                        if (reader.IsStartElement())
+                        {
+                            // Get element name and switch on it.
+                            switch (reader.Name.ToLowerInvariant())
+                            {
+                                case "participants":
+
+                                    break;
+
+                                case "expenses":
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                return null;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception("Unable to deserialize XML string to ExpensesRecord, see inner exception.", e);
             }
